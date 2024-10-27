@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Munteanu_Paul_Lab2.Data;
 using Munteanu_Paul_Lab2.Models;
 
-namespace Munteanu_Paul_Lab2.Pages.Books
+namespace Munteanu_Paul_Lab2.Pages.Categories
 {
     public class DetailsModel : PageModel
     {
@@ -19,8 +19,8 @@ namespace Munteanu_Paul_Lab2.Pages.Books
             _context = context;
         }
 
-        public Book Book { get; set; } = default!;
-        public List<string> CategoryNames { get; set; } = new List<string>();
+        public Category Category { get; set; } = default!;
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -28,17 +28,14 @@ namespace Munteanu_Paul_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book.Include(b => b.Author)
-                          .Include(b => b.BookCategories)
-                          .ThenInclude(b => b.Category)
-                          .FirstOrDefaultAsync(m => m.ID == id); if (book == null)
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
+            if (category == null)
             {
                 return NotFound();
             }
             else
             {
-                Book = book;
-                CategoryNames = book.BookCategories.Select(bc => bc.Category.CategoryName).ToList();
+                Category = category;
             }
             return Page();
         }
