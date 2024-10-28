@@ -30,6 +30,7 @@ namespace Munteanu_Paul_Lab2.Pages.Books
             //se va include Author conform cu sarcina de la lab 2
             BookD.Books = await _context.Book
             .Include(b => b.Publisher)
+            .Include(b => b.Author)
             .Include(b => b.BookCategories)
             .ThenInclude(b => b.Category)
             .AsNoTracking()
